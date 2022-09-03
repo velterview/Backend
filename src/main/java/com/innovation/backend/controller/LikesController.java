@@ -20,4 +20,9 @@ public class LikesController {
         Member member = null;
         return likesService.createLike(interviewId, member);
     }
+    @RequestMapping(value = "/{interviewId}/like", method = RequestMethod.DELETE)
+    public ResponseDto<?> deleteLike(@PathVariable Long interviewId/*, @AuthenticationPrincipal UserDetailsImpl userDetails*/){
+        Member member = null;
+        return likesService.deleteLike(interviewId, member);
+    }
 }

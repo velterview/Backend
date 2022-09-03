@@ -40,4 +40,19 @@ public class LikesService {
         }
     }
 
+    @Transactional
+    public ResponseDto<?> deleteLike(Long interviewId, Member member) {
+        Optional<Interview> interviewOptional = interviewRepository.findById(interviewId);
+        if (interviewOptional.isEmpty()) return ResponseDto.fail(ErrorCode.INTERVIEW_NOT_FOUND);
+
+        Interview interview = interviewOptional.get();
+        Optional<Likes> likesOptional = likesRepository.findByMemberAndInterview(member, interview);
+        if (likesOptional.isEmpty()) {
+            return ResponseDto.fail(ErrorCode.LIKES_NOT_FOUND);
+        }else{
+            Likes likes = likesOptional.get();
+            likesRepository.delete(likes);
+            return ResponseDto.success(LikesResponseDto.builder().message("찜한 질문을 취소하였습니다."));
+        }
+    }
 }

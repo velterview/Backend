@@ -23,5 +23,10 @@ public class MyPageController {
         return myPageService.readMypage(member);
     }
 
+    @RequestMapping(value = "/{interviewId}", method = RequestMethod.PUT)
+    public ResponseDto<?> makePublic(@PathVariable Long interviewId /*, @AuthenticationPrincipal UserDetailsInpl userDetailsInpl*/){
+        Member member = null;
+        return myPageService.makePublic(interviewId,member);
+    }
 
 }

@@ -65,5 +65,17 @@ public class MyPageService {
                 .myanswer(myanswer)
                 .reference(interview.getReference()).build();
     }
+    @Transactional
+    public ResponseDto<?> makePublic(Long interviewId, Member member){
+        Optional<Interview> interviewOptional = interviewRepository.findById(interviewId);
+        if(interviewOptional.isEmpty()) return ResponseDto.fail(ErrorCode.INTERVIEW_NOT_FOUND);
+        Interview interview = interviewOptional.get();
+        Optional<Answer> answerOptional = answerRepository.findByMemberAndInterview(member,interview);
+        if(answerOptional.isEmpty())return ResponseDto.fail(ErrorCode.ANSWER_NOT_FOUND);
+        Answer answer = answerOptional.get();
+        answer.makePublic();
+        if(answer.isPublic()) return ResponseDto.success(new MessageResponseDto("공개로 전환하였습니다."));
+        else return ResponseDto.success(new MessageResponseDto("비공개로 전환하였습니다."));
+    }
 
 }

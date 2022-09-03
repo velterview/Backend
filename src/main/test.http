@@ -1,0 +1,43 @@
+### 회원가입
+POST http://localhost:8080/member/signup
+Content-Type: application/json
+
+{
+  "username":"usertest",
+  "password":"12345",
+  "passwordConfirm":"12345",
+  "nickname": "coconut"
+}
+
+### 회원가입 - 중복된 id
+POST http://localhost:8080/member/signup
+Content-Type: application/json
+
+{
+  "username":"usertest",
+  "password":"12345",
+  "passwordConfirm":"12345",
+  "nickname": "papapa"
+}
+
+### 회원가입 - 중복된 닉네임
+POST http://localhost:8080/member/signup
+Content-Type: application/json
+
+{
+  "username":"usertest2",
+  "password":"12345",
+  "passwordConfirm":"12345",
+  "nickname": "coconut"
+}
+
+### 회원가입 - 비밀번호 불일치
+POST http://localhost:8080/member/signup
+Content-Type: application/json
+
+{
+  "username":"usertest3",
+  "password":"123456",
+  "passwordConfirm":"123457",
+  "nickname": "coconut2"
+}

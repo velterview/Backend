@@ -1,6 +1,7 @@
 package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.innovation.backend.dto.request.member.LoginRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +35,10 @@ public class Member {
     @JsonIgnore
     private List<Answer> answers;
 
+    public Member(LoginRequestDto loginRequestDto){
+        this.username = loginRequestDto.getUsername();
+        this.password = loginRequestDto.getPassword();
+        this.nickname = loginRequestDto.getNickname();
+    }
 
 }

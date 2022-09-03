@@ -41,3 +41,12 @@ Content-Type: application/json
   "passwordConfirm":"123457",
   "nickname": "coconut2"
 }
+
+### 로그인
+POST http://localhost:8080/member/login
+Content-Type: application/json
+
+{
+  "username":"usertest",
+  "password":"12345"
+}

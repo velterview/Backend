@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class SignupResponseDto {
+public class MemberInfoResDto {
     private Long id;
     private String username;
     private String nickname;

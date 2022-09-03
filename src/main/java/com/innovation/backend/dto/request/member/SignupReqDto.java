@@ -2,10 +2,12 @@ package com.innovation.backend.dto.request.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class SignupRequestDto {
+public class SignupReqDto {
     private String username;
     private String password;
     private String passwordConfirm;

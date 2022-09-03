@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class RefreshToken {
     @Id
@@ -21,5 +20,14 @@ public class RefreshToken {
 
     @Column(nullable = false)
     private String tokenValue;
+
+    public RefreshToken(Member member, String tokenValue){
+        this.member = member;
+        this.tokenValue = tokenValue;
+    }
+
+    public void updateValue(String tokenValue){
+        this.tokenValue = tokenValue;
+    }
 
 }

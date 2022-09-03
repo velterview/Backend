@@ -17,6 +17,9 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String name;
+
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "topic", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<SubTopic> subTopics;

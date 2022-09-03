@@ -30,5 +30,8 @@ public class Answer {
     @Column(nullable = false)
     private boolean isPublic;
 
+    public void makePublic(){
+        this.isPublic = !this.isPublic;
+    }
 
 }

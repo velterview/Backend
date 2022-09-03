@@ -22,7 +22,7 @@ public class Interview {
     private SubTopic subTopic;
 
     @Column(nullable = false)
-    private String question;
+    private String question;    
 
     @Column(nullable = false)
     private String answer;
@@ -30,11 +30,11 @@ public class Interview {
     @Column()
     private String reference;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "interview", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Likes> likes;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "interview", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Answer> answers;
 

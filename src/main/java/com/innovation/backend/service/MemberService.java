@@ -2,7 +2,7 @@ package com.innovation.backend.service;
 
 import com.innovation.backend.dto.request.LoginReqDto;
 import com.innovation.backend.dto.request.SignupReqDto;
-import com.innovation.backend.dto.response.LogoutDto;
+import com.innovation.backend.dto.response.MessageDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.dto.response.MemberInfoResDto;
 import com.innovation.backend.entity.Member;
@@ -125,22 +125,84 @@ public class MemberService {
         String refreshTokenValidate = jwtUtil.validateToken(refreshToken);
 
 
-        if (refreshTokenValidate.equals(TokenProperties.VALID)) {
-            RefreshToken refreshTokenFromDB = jwtUtil.getRefreshTokenFromDB(member);
-            if (refreshTokenFromDB != null && refreshToken.equals(refreshTokenFromDB.getTokenValue())) {
-                refreshTokenRepository.delete(refreshTokenFromDB);
-                LogoutDto logoutDto = LogoutDto.builder()
-                        .message("로그아웃 되었습니다.")
-                        .build();
-                return ResponseDto.success(logoutDto);
-            } else {
+        switch (refreshTokenValidate) {
+            case TokenProperties.VALID:
+            case TokenProperties.EXPIRED:
+                RefreshToken refreshTokenFromDB = jwtUtil.getRefreshTokenFromDB(member);
+                if (refreshTokenFromDB != null && refreshToken.equals(refreshTokenFromDB.getTokenValue())) {
+                    refreshTokenRepository.delete(refreshTokenFromDB);
+                    MessageDto messageDto = MessageDto.builder()
+                            .message("로그아웃 되었습니다.")
+                            .build();
+                    return ResponseDto.success(messageDto);
+                } else {
+                    return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+                }
+            default:
                 return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
-            }
-        } else{
-            return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
         }
     }
 
+    @Transactional
+    public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+        String refreshHeader = request.getHeader(TokenProperties.REFRESH_HEADER);
+        String accessHeader = request.getHeader(TokenProperties.AUTH_HEADER);
+
+        if (refreshHeader == null) {
+            return ResponseDto.fail(ErrorCode.NEED_REFRESH_TOKEN);
+        }
+
+        if (!refreshHeader.startsWith(TokenProperties.TOKEN_TYPE)) {
+            return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        if(accessHeader == null){
+            return ResponseDto.fail(ErrorCode.NEED_ACCESS_TOKEN);
+        }
+
+        if (!accessHeader.startsWith(TokenProperties.TOKEN_TYPE)) {
+            return ResponseDto.fail(ErrorCode.INVALID_ACCESS_TOKEN);
+        }
+
+        String refreshToken = refreshHeader.replace(TokenProperties.TOKEN_TYPE, "");
+        String accessToken = refreshHeader.replace(TokenProperties.TOKEN_TYPE, "");
+
+        // Access 토큰 검증
+        String AccessTokenValidate = jwtUtil.validateToken(accessToken);
+
+        if (AccessTokenValidate.equals(TokenProperties.INVALID)) {
+            return ResponseDto.fail(ErrorCode.INVALID_ACCESS_TOKEN);
+        }
+
+        // Refresh 토큰 검증
+        String refreshTokenValidate = jwtUtil.validateToken(refreshToken);
+
+        switch (refreshTokenValidate) {
+            case TokenProperties.EXPIRED:
+                return ResponseDto.fail(ErrorCode.EXPIRED_REFRESH_TOKEN);
+            case TokenProperties.VALID:
+                String username = jwtUtil.getUsernameFromToken(refreshToken);
+                Member member = isPresentMemberByUsername(username);
+
+                if (member == null) {
+                    return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
+                } else {
+                    RefreshToken refreshTokenFromDB = jwtUtil.getRefreshTokenFromDB(member);
+                    if (refreshTokenFromDB != null && refreshToken.equals(refreshTokenFromDB.getTokenValue())) {
+                        String newAccessToken = jwtUtil.createToken(username, TokenProperties.AUTH_HEADER);
+                        response.addHeader(TokenProperties.AUTH_HEADER, TokenProperties.TOKEN_TYPE + newAccessToken);
+                        MessageDto messageDto = MessageDto.builder()
+                                .message("Access Token이 발급되었습니다.")
+                                .build();
+                        return ResponseDto.success(messageDto);
+                    } else {
+                        return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+                    }
+                }
+            default:
+                return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+    }
 
 
     private boolean idDuplicateCheck(String username){

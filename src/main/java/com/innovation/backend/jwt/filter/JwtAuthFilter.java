@@ -44,7 +44,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             String validate = jwtUtil.validateToken(accessToken);
 
-
             switch (validate) {
                 case TokenProperties.EXPIRED:
                     jwtUtil.exceptionResponse(response, ErrorCode.EXPIRED_ACCESS_TOKEN);

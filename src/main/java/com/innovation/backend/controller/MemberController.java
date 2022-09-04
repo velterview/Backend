@@ -38,5 +38,9 @@ public class MemberController {
         return memberService.logout(request, userDetails);
     }
 
-
+    // reissue
+    @PostMapping("/member/reissue")
+    public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+        return memberService.reissue(request,response);
+    }
 }

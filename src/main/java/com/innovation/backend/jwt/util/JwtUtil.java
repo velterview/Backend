@@ -73,15 +73,6 @@ public class JwtUtil {
         response.getWriter().write(httpResponse);
     }
 
-
-
-//    // refresh 토큰 DB에 저장되어 있는 토큰과 같은지 확인
-//    public boolean isrefreshTokenSameWithDB(String refreshToken, Member member){
-//        RefreshToken refreshTokenFromDB = getRefreshTokenFromDB(member);
-//
-//        return refreshToken.equals(refreshTokenFromDB);
-//    }
-
     // DB에 있는 refreshToken가져오기
     public RefreshToken getRefreshTokenFromDB(Member member){
         Optional<RefreshToken> refreshTokenFromDB = refreshTokenRepository.findByMember(member);
@@ -91,6 +82,15 @@ public class JwtUtil {
     // token에서 username 가져오기
     public String getUsernameFromToken(String token){
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getUsernameFromeTokenReissue(String token){
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        } catch (ExpiredJwtException e){
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        }
+
     }
 
 }

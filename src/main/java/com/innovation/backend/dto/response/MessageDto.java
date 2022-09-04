@@ -1,4 +1,4 @@
-package com.innovation.backend.jwt.dto;
+package com.innovation.backend.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TokenDto {
-
-    private String accessToken;
-    private String refreshToken;
-
+public class MessageDto {
+    private String message;
 }

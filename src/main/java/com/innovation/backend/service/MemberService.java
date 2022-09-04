@@ -2,6 +2,7 @@ package com.innovation.backend.service;
 
 import com.innovation.backend.dto.request.LoginReqDto;
 import com.innovation.backend.dto.request.SignupReqDto;
+import com.innovation.backend.dto.response.LogoutDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.dto.response.MemberInfoResDto;
 import com.innovation.backend.entity.Member;
@@ -11,11 +12,13 @@ import com.innovation.backend.jwt.util.JwtUtil;
 import com.innovation.backend.jwt.util.TokenProperties;
 import com.innovation.backend.repository.MemberRepository;
 import com.innovation.backend.repository.RefreshTokenRepository;
+import com.innovation.backend.security.user.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -27,52 +30,6 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-    private boolean idDuplicateCheck(String username){
-        Member member = isPresentMemberByUsername(username);
-
-        return member == null;
-    }
-
-    private boolean nicknameDuplicateCheck(String nickname){
-        Member member = isPresentMemberByNickname(nickname);
-
-        return member == null;
-    }
-
-    private  boolean isSamePassword(String password, String ConfirmPassword){
-        return password.equals(ConfirmPassword);
-    }
-
-    //// 회원가입 조건 추가 ?
-//    public boolean nullCheck(String valueForSignup){
-//        return valueForSignup == null || valueForSignup.equals("") || valueForSignup.equals(" ");
-//    }
-//
-//    private boolean idStrCheck (String username){
-//        return Pattern.matches("^[a-zA-Z0-9]{4,12}$", username);
-//    }
-//
-//    private boolean passwordStrCheck(String password){
-//        return Pattern.matches("^[a-z0-9]{4,32}$", password);
-//    }
-
-    @Transactional(readOnly = true)
-    public Member isPresentMemberByUsername(String username) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        return optionalMember.orElse(null);
-    }
-
-    @Transactional(readOnly = true)
-    public Member isPresentMemberByNickname(String nickname) {
-        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
-        return optionalMember.orElse(null);
-    }
-
-    private void TokenToHeaders(HttpServletResponse response, String accessToken, String refreshToken) {
-        response.addHeader(TokenProperties.AUTH_HEADER, TokenProperties.TOKEN_TYPE + accessToken);
-        response.addHeader(TokenProperties.REFRESH_HEADER, TokenProperties.TOKEN_TYPE + refreshToken);
-    }
 
     //회원가입
     @Transactional
@@ -122,19 +79,20 @@ public class MemberService {
         String accessToken = jwtUtil.createToken(member.getUsername(),TokenProperties.AUTH_HEADER);
         String refreshToken = jwtUtil.createToken(member.getUsername(), TokenProperties.REFRESH_HEADER);
 
-        Optional<RefreshToken> dbRefreshToken = refreshTokenRepository.findByMember(member);
+        RefreshToken refreshTokenFromDB = jwtUtil.getRefreshTokenFromDB(member);
 
         // 로그인 경력이 있는 사용자 -> DB에 Refresh Token 있음 -> 새로 로그인 했으면 새로 발급받는 토큰으로 변경
         // 로그인이 처음인 사용자 -> DB에 Refresh Token 없음 -> 발급받은 Refresh 토큰 저장
-        if(dbRefreshToken.isPresent()){
-            dbRefreshToken.get().updateValue(refreshToken);
-        }else{
+        if(refreshTokenFromDB == null){
             RefreshToken saveRefreshToken = RefreshToken.builder()
                     .member(member)
                     .tokenValue(refreshToken)
                     .build();
 
             refreshTokenRepository.save(saveRefreshToken);
+
+        }else{
+            refreshTokenFromDB.updateValue(refreshToken);
         }
 
         // 헤더에 응답으로 보내줌
@@ -148,5 +106,87 @@ public class MemberService {
         return ResponseDto.success(memberInfoResDto);
     }
 
+    @Transactional
+    public ResponseDto<?> logout(HttpServletRequest request, UserDetailsImpl userDetails){
+
+        Member member = userDetails.getMember();
+
+        String refreshHeader = request.getHeader(TokenProperties.REFRESH_HEADER);
+
+        if(refreshHeader == null){return ResponseDto.fail(ErrorCode.NEED_REFRESH_TOKEN);}
+
+        if(!refreshHeader.startsWith(TokenProperties.TOKEN_TYPE)){
+            return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        String refreshToken = refreshHeader.replace(TokenProperties.TOKEN_TYPE,"");
+
+        // 토큰 검증
+        String refreshTokenValidate = jwtUtil.validateToken(refreshToken);
+
+
+        if (refreshTokenValidate.equals(TokenProperties.VALID)) {
+            RefreshToken refreshTokenFromDB = jwtUtil.getRefreshTokenFromDB(member);
+            if (refreshTokenFromDB != null && refreshToken.equals(refreshTokenFromDB.getTokenValue())) {
+                refreshTokenRepository.delete(refreshTokenFromDB);
+                LogoutDto logoutDto = LogoutDto.builder()
+                        .message("로그아웃 되었습니다.")
+                        .build();
+                return ResponseDto.success(logoutDto);
+            } else {
+                return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+            }
+        } else{
+            return ResponseDto.fail(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+    }
+
+
+
+    private boolean idDuplicateCheck(String username){
+        Member member = isPresentMemberByUsername(username);
+
+        return member == null;
+    }
+
+    private boolean nicknameDuplicateCheck(String nickname){
+        Member member = isPresentMemberByNickname(nickname);
+
+        return member == null;
+    }
+
+    private  boolean isSamePassword(String password, String ConfirmPassword){
+        return password.equals(ConfirmPassword);
+    }
+
+    //// 회원가입 조건 추가 ?
+//    public boolean nullCheck(String valueForSignup){
+//        return valueForSignup == null || valueForSignup.equals("") || valueForSignup.equals(" ");
+//    }
+//
+//    private boolean idStrCheck (String username){
+//        return Pattern.matches("^[a-zA-Z0-9]{4,12}$", username);
+//    }
+//
+//    private boolean passwordStrCheck(String password){
+//        return Pattern.matches("^[a-z0-9]{4,32}$", password);
+//    }
+
+    @Transactional(readOnly = true)
+    public Member isPresentMemberByUsername(String username) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(username);
+        return optionalMember.orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Member isPresentMemberByNickname(String nickname) {
+        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+        return optionalMember.orElse(null);
+    }
+
+    private void TokenToHeaders(HttpServletResponse response, String accessToken, String refreshToken) {
+        response.addHeader(TokenProperties.AUTH_HEADER, TokenProperties.TOKEN_TYPE + accessToken);
+        response.addHeader(TokenProperties.REFRESH_HEADER, TokenProperties.TOKEN_TYPE + refreshToken);
+    }
 
 }

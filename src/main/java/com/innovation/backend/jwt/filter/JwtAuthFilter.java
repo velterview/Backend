@@ -42,28 +42,37 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             String accessToken = jwtHeader.replace(TokenProperties.TOKEN_TYPE,"");
 
-            if(!jwtUtil.validateToken(response, accessToken,TokenProperties.AUTH_HEADER)){
-                return;
+            String validate = jwtUtil.validateToken(accessToken);
+
+
+            switch (validate) {
+                case TokenProperties.EXPIRED:
+                    jwtUtil.exceptionResponse(response, ErrorCode.EXPIRED_ACCESS_TOKEN);
+                    return;
+                case TokenProperties.INVALID:
+                    jwtUtil.exceptionResponse(response, ErrorCode.INVALID_ACCESS_TOKEN);
+                    return;
+                case TokenProperties.VALID:
+                    String username = jwtUtil.getUsernameFromToken(accessToken);
+
+                    if (username == null) {
+                        jwtUtil.exceptionResponse(response, ErrorCode.INVALID_ACCESS_TOKEN);
+                        return;
+                    }
+
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                    if (userDetails == null) {
+                        jwtUtil.exceptionResponse(response, ErrorCode.MEMBER_NOT_FOUND);
+                        return;
+                    }
+
+                    // 모든 예외처리 통과 -> 인증객체 생성, 권한부여
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    chain.doFilter(request, response);
+                    break;
             }
-
-            String username = jwtUtil.getUsernameFromToken(accessToken);
-
-            if(username == null){
-                jwtUtil.exceptionResponse(response,ErrorCode.INVALID_ACCESS_TOKEN);
-                return;
-            }
-
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-            if(userDetails == null){
-                jwtUtil.exceptionResponse(response, ErrorCode.MEMBER_NOT_FOUND);
-                return;
-            }
-
-            // 모든 예외처리 통과 -> 인증객체 생성, 권한부여
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            chain.doFilter(request,response);
 
         }else{
             // FilterChain chain 해당 필터가 실행 후 다른 필터도 실행할 수 있도록 연결실켜주는 메서드

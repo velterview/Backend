@@ -53,7 +53,7 @@ Content-Type: application/json
 
 ### 회원1 답 작성
 POST http://localhost:8080/auth/interview/1
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI5MjY4MiwiZXhwIjoxNjYyMjkyODAyfQ.xYF6AzO2kdxHE-pTslfnCwAszrYLTxP-SiWQzMA7IPg
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMwODkwOCwiZXhwIjoxNjYyMzA5NTA4fQ.4YDmBmg7eHmFhZ4EVkJRUdcJwJo8HpxT40rF5Mu2iFU
 Content-Type: application/json
 
 {
@@ -83,9 +83,9 @@ Content-Type: application/json
   "ispublic": true
 }
 
-### 회원1 답 작성
+### 회원1 답  또 작성
 POST http://localhost:8080/auth/interview/1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI5MjY4MiwiZXhwIjoxNjYyMjkyODAyfQ.xYF6AzO2kdxHE-pTslfnCwAszrYLTxP-SiWQzMA7IPg
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMwMTAzNiwiZXhwIjoxNjYyMzAxMzM2fQ.3GtmnF9ox3LSvfrRDHkV6rHBV9rQy3qzszPeNHZMO7Q
 Content-Type: application/json
 
 {
@@ -94,7 +94,7 @@ Content-Type: application/json
   "ispublic": true
 }
 
-####### 2분후 글쓰기 -> EXPIRED ACCESS TOKEN
+####### 5분후 글쓰기 -> EXPIRED ACCESS TOKEN
 POST http://localhost:8080/auth/interview/1
 Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI4NzQ2MiwiZXhwIjoxNjYyMjg3NTgyfQ.eU0TtSeSo1zIFZKDwnxA_OY3e3qGpFYK_AwxCZByf-A
 Content-Type: application/json
@@ -104,3 +104,53 @@ Content-Type: application/json
   "content": "자바는 객체지향 언어이다.",
   "ispublic": true
 }
+
+### 로그아웃 리프레쉬 토큰 안보냄 -> NEED REFRESH TOKEN
+POST http://localhost:8080/auth/member/logout
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDE4NCwiZXhwIjoxNjYyMzEwNzg0fQ.IxVMJBRLmlqCIA_a4lLDshKDCfG13AP2WwgP1mSPfM8
+Content-Type: application/json
+
+### 로그아웃 리프레쉬 token type 빼고 보냄 -> IVALID REFRESH TOKEN
+POST http://localhost:8080/auth/member/logout
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDE4NCwiZXhwIjoxNjYyMzEwNzg0fQ.IxVMJBRLmlqCIA_a4lLDshKDCfG13AP2WwgP1mSPfM8
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDE4NCwiZXhwIjoxNjYyMzk2NTg0fQ.kHr9p6NPhncw4hldlzwBstA_V7cBeNRsGMttZboLVbM
+Content-Type: application/json
+
+### 로그아웃 유효하지 않은 리프레쉬 보냄 -> IVALID REFRESH TOKEN
+POST http://localhost:8080/auth/member/logout
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDE4NCwiZXhwIjoxNjYyMzEwNzg0fQ.IxVMJBRLmlqCIA_a4lLDshKDCfG13AP2WwgP1mSPfM8
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDE4NCwiZXhwIjoxNjYyMzk2NTg0fQ.
+Content-Type: application/json
+
+### 로그아웃
+POST http://localhost:8080/auth/member/logout
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDU0OCwiZXhwIjoxNjYyMzExMTQ4fQ.n-UdRprDhIe277weUxYV3V6I73FZad8IhGMOJjUc8zg
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDU0OCwiZXhwIjoxNjYyMzk2OTQ4fQ.P1v0Oicemb10CrR-7G5TwwtaWr4Ykiv8A-DxoyawFZ0
+
+
+
+### 회원가입2
+POST http://localhost:8080/member/signup
+Content-Type: application/json
+
+{
+  "username":"usertest2",
+  "password":"123456",
+  "passwordConfirm":"123456",
+  "nickname": "papaya"
+}
+
+### 로그인
+POST http://localhost:8080/member/login
+Content-Type: application/json
+
+{
+  "username":"usertest2",
+  "password":"123456"
+}
+
+### 회원2 로그아웃 사용자 토큰과 일치하지 않은 리프레쉬 토큰(회원1 토큰) 보냄 -> IVALID REFRESH TOKEN
+POST http://localhost:8080/auth/member/logout
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdDIiLCJpYXQiOjE2NjIzMTA2MDMsImV4cCI6MTY2MjMxMTIwM30.9eVB2UPZFKooOSP6eo1V_vjF-92zvFM3bbD5uHz-tGY
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxMDU0OCwiZXhwIjoxNjYyMzk2OTQ4fQ.P1v0Oicemb10CrR-7G5TwwtaWr4Ykiv8A-DxoyawFZ0
+Content-Type: application/json

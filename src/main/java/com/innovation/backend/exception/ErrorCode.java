@@ -15,7 +15,7 @@ public enum ErrorCode {
     // 권한 요청 시 Access 토큰을 보내지 않은 경우
     INVALID_LOGIN("INVALID_LOGIN", "로그인이 필요합니다."),
 
-    // reissue시 Refresh 토큰을 보내지 않은 경우
+    // reissue 또는 logout시 Refresh 토큰을 보내지 않은 경우
     NEED_REFRESH_TOKEN("NEED_REFRESH_TOKEN","Refresh Token이 필요합니다."),
 
     // 유효하지 않은 토큰

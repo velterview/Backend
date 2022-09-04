@@ -3,12 +3,15 @@ package com.innovation.backend.controller;
 import com.innovation.backend.dto.request.LoginReqDto;
 import com.innovation.backend.dto.request.SignupReqDto;
 import com.innovation.backend.dto.response.ResponseDto;
+import com.innovation.backend.security.user.UserDetailsImpl;
 import com.innovation.backend.service.MemberService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -27,6 +30,12 @@ public class MemberController {
     @PostMapping("/member/login")
     public ResponseDto<?> login(@RequestBody LoginReqDto loginReqDto, HttpServletResponse response) {
         return memberService.login(loginReqDto, response);
+    }
+
+    // 로그아웃
+    @PostMapping("/auth/member/logout")
+    public ResponseDto<?> logout(HttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return memberService.logout(request, userDetails);
     }
 
 

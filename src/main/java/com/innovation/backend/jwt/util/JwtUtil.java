@@ -2,6 +2,8 @@ package com.innovation.backend.jwt.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innovation.backend.dto.response.ResponseDto;
+import com.innovation.backend.entity.Member;
+import com.innovation.backend.entity.RefreshToken;
 import com.innovation.backend.exception.ErrorCode;
 import com.innovation.backend.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -50,20 +53,15 @@ public class JwtUtil {
     }
     
     // 토큰 검증
-    public boolean validateToken(HttpServletResponse response, String token, String type) throws IOException {
-
-        ErrorCode expiredErrorCode = type.equals(TokenProperties.AUTH_HEADER) ? ErrorCode.EXPIRED_ACCESS_TOKEN : ErrorCode.EXPIRED_REFRESH_TOKEN;
-        ErrorCode invalidErrorCode = type.equals(TokenProperties.AUTH_HEADER) ? ErrorCode.INVALID_ACCESS_TOKEN : ErrorCode.INVALID_REFRESH_TOKEN;
-
+    public String validateToken( String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+            return TokenProperties.VALID;
         } catch (ExpiredJwtException e) {
-            exceptionResponse(response, expiredErrorCode);
+            return TokenProperties.EXPIRED;
         } catch (SecurityException | MalformedJwtException | IllegalArgumentException | UnsupportedJwtException | NullPointerException e) {
-            exceptionResponse(response, invalidErrorCode);
+            return TokenProperties.INVALID;
         }
-        return false;
     }
 
     // 예외 응답
@@ -73,6 +71,21 @@ public class JwtUtil {
         ResponseDto<?> responseDto = ResponseDto.fail(errorCode);
         String httpResponse = objectMapper.writeValueAsString(responseDto);
         response.getWriter().write(httpResponse);
+    }
+
+
+
+//    // refresh 토큰 DB에 저장되어 있는 토큰과 같은지 확인
+//    public boolean isrefreshTokenSameWithDB(String refreshToken, Member member){
+//        RefreshToken refreshTokenFromDB = getRefreshTokenFromDB(member);
+//
+//        return refreshToken.equals(refreshTokenFromDB);
+//    }
+
+    // DB에 있는 refreshToken가져오기
+    public RefreshToken getRefreshTokenFromDB(Member member){
+        Optional<RefreshToken> refreshTokenFromDB = refreshTokenRepository.findByMember(member);
+        return refreshTokenFromDB.orElse(null);
     }
 
     // token에서 username 가져오기

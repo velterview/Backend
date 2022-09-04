@@ -9,8 +9,6 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails{
     private  Member member;
 
-    public UserDetailsImpl(Member member) {this.member = member;}
-
     public Member getMember(){return this.member;}
 
     public void setMember(Member member) {this.member = member;}

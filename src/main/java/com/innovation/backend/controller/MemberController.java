@@ -1,7 +1,7 @@
 package com.innovation.backend.controller;
 
-import com.innovation.backend.dto.request.member.LoginReqDto;
-import com.innovation.backend.dto.request.member.SignupReqDto;
+import com.innovation.backend.dto.request.LoginReqDto;
+import com.innovation.backend.dto.request.SignupReqDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.service.MemberService;
 import lombok.AllArgsConstructor;

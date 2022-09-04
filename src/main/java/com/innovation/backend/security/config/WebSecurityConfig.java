@@ -1,5 +1,8 @@
 package com.innovation.backend.security.config;
 
+import com.innovation.backend.jwt.filter.JwtAuthFilter;
+import com.innovation.backend.jwt.util.JwtUtil;
+import com.innovation.backend.security.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-//    private final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,13 +39,13 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.cors();
-        http.csrf().disable();
-        http.formLogin().disable();
-
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests().antMatchers("/member/**").permitAll();
-//                .anyRequest().authenticated()
-//                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable()
+                .addFilterBefore(new JwtAuthFilter(jwtUtil,userDetailsService),UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests((authz)->authz
+                        .antMatchers("/auth/**").authenticated()
+                        .anyRequest().permitAll());
 
         return http.build();
     }

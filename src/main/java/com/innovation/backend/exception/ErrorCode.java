@@ -24,7 +24,11 @@ public enum ErrorCode {
     
     // 만료된 토큰
     EXPIRED_ACCESS_TOKEN("EXPIRED_ACCESS_TOKEN", "만료된 Access Token 입니다."),
-    EXPIRED_REFRESH_TOKEN("EXPIRED_REFRESH_TOKEN", "만료된 Refresh Token 입니다.");
+    EXPIRED_REFRESH_TOKEN("EXPIRED_REFRESH_TOKEN", "만료된 Refresh Token 입니다."),
+
+    // 인터뷰 관련 에러
+    INTERVIEW_NOT_FOUND("INTERVIEW_NOT_FOUND", "해당 인터뷰 id를 찾을 수 없습니다."),
+    SUBTOPIC_NOT_FOUND("INTERVIEW_NOT_FOUND", "해당 인터뷰 id를 찾을 수 없습니다.");
 
     private final String code;
     private final String message;

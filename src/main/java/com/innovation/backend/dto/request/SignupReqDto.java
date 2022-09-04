@@ -1,4 +1,4 @@
-package com.innovation.backend.dto.request.member;
+package com.innovation.backend.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

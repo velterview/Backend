@@ -1,9 +1,9 @@
 package com.innovation.backend.service;
 
-import com.innovation.backend.dto.request.member.LoginReqDto;
-import com.innovation.backend.dto.request.member.SignupReqDto;
+import com.innovation.backend.dto.request.LoginReqDto;
+import com.innovation.backend.dto.request.SignupReqDto;
 import com.innovation.backend.dto.response.ResponseDto;
-import com.innovation.backend.dto.response.member.MemberInfoResDto;
+import com.innovation.backend.dto.response.MemberInfoResDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.entity.RefreshToken;
 import com.innovation.backend.exception.ErrorCode;
@@ -14,9 +14,9 @@ import com.innovation.backend.repository.RefreshTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -29,13 +29,13 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     private boolean idDuplicateCheck(String username){
-        Member member = memberRepository.findByUsername(username);
+        Member member = isPresentMemberByUsername(username);
 
         return member == null;
     }
 
     private boolean nicknameDuplicateCheck(String nickname){
-        Member member = memberRepository.findByNickname(nickname);
+        Member member = isPresentMemberByNickname(nickname);
 
         return member == null;
     }
@@ -57,7 +57,19 @@ public class MemberService {
 //        return Pattern.matches("^[a-z0-9]{4,32}$", password);
 //    }
 
-    private void setTokenOnHeader(HttpServletResponse response, String accessToken, String refreshToken) {
+    @Transactional(readOnly = true)
+    public Member isPresentMemberByUsername(String username) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(username);
+        return optionalMember.orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Member isPresentMemberByNickname(String nickname) {
+        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+        return optionalMember.orElse(null);
+    }
+
+    private void TokenToHeaders(HttpServletResponse response, String accessToken, String refreshToken) {
         response.addHeader(TokenProperties.AUTH_HEADER, TokenProperties.TOKEN_TYPE + accessToken);
         response.addHeader(TokenProperties.REFRESH_HEADER, TokenProperties.TOKEN_TYPE + refreshToken);
     }
@@ -77,9 +89,12 @@ public class MemberService {
         else if(!isSamePassword(password,passwordConfirm)) {return ResponseDto.fail(ErrorCode.PASSWORDS_NOT_MATCHED);}
 
         else {
-            signupReqDto.setPassword(passwordEncoder.encode(password));
 
-            Member member = new Member(signupReqDto);
+            Member member = Member.builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .nickname(nickname)
+                    .build();
 
             memberRepository.save(member);
 
@@ -95,7 +110,7 @@ public class MemberService {
 
     @Transactional
     public ResponseDto<?> login(LoginReqDto loginReqDto, HttpServletResponse response){
-        Member member = memberRepository.findByUsername(loginReqDto.getUsername());
+        Member member = isPresentMemberByUsername(loginReqDto.getUsername());
 
         if(member == null){return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);}
 
@@ -114,12 +129,16 @@ public class MemberService {
         if(dbRefreshToken.isPresent()){
             dbRefreshToken.get().updateValue(refreshToken);
         }else{
-            RefreshToken saveRefreshToken = new RefreshToken(member,refreshToken);
+            RefreshToken saveRefreshToken = RefreshToken.builder()
+                    .member(member)
+                    .tokenValue(refreshToken)
+                    .build();
+
             refreshTokenRepository.save(saveRefreshToken);
         }
 
         // 헤더에 응답으로 보내줌
-        setTokenOnHeader(response, accessToken, refreshToken);
+        TokenToHeaders(response, accessToken, refreshToken);
 
         MemberInfoResDto memberInfoResDto = MemberInfoResDto.builder()
                 .id(member.getId())

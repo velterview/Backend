@@ -4,7 +4,6 @@ public interface TokenProperties {
     String AUTH_HEADER = "Authorization";
     String REFRESH_HEADER = "Refresh-Token";
     String TOKEN_TYPE = "BEARER ";
-    String Issuer = "ky";
 
     // Access JWT 토큰의 유효기간: 30분 (단위: milliseconds)
 //    int ACCESS_JWT_TOKEN_VALID_TIME = 30 * 60 * 1000;

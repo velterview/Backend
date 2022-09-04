@@ -1,4 +1,4 @@
-package com.innovation.backend.dto.response.member;
+package com.innovation.backend.jwt.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberInfoResDto {
-    private Long id;
-    private String username;
-    private String nickname;
+public class TokenDto {
+
+    private String accessToken;
+    private String refreshToken;
+
 }

@@ -50,3 +50,57 @@ Content-Type: application/json
   "username":"usertest",
   "password":"12345"
 }
+
+### 회원1 답 작성
+POST http://localhost:8080/auth/interview/1
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI5MjY4MiwiZXhwIjoxNjYyMjkyODAyfQ.xYF6AzO2kdxHE-pTslfnCwAszrYLTxP-SiWQzMA7IPg
+Content-Type: application/json
+
+{
+    "interviewId": 1,
+    "content": "자바는 객체지향 언어이다.",
+    "ispublic": true
+}
+
+####### 토큰 보내지 않고 글쓰기 -> IVALID LOGIN
+POST http://localhost:8080/auth/interview/1
+Content-Type: application/json
+
+{
+  "interviewId": 1,
+  "content": "자바는 객체지향 언어이다.",
+  "ispublic": true
+}
+
+####### 잘못된 토큰 보내고 글쓰기 -> INVALD ACCESS TOKEN
+POST http://localhost:8080/auth/interview/1
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI4NzQ2Miw
+Content-Type: application/json
+
+{
+  "interviewId": 1,
+  "content": "자바는 객체지향 언어이다.",
+  "ispublic": true
+}
+
+### 회원1 답 작성
+POST http://localhost:8080/auth/interview/1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI5MjY4MiwiZXhwIjoxNjYyMjkyODAyfQ.xYF6AzO2kdxHE-pTslfnCwAszrYLTxP-SiWQzMA7IPg
+Content-Type: application/json
+
+{
+  "interviewId": 1,
+  "content": "자바는 객체지향 언어이다.",
+  "ispublic": true
+}
+
+####### 2분후 글쓰기 -> EXPIRED ACCESS TOKEN
+POST http://localhost:8080/auth/interview/1
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjI4NzQ2MiwiZXhwIjoxNjYyMjg3NTgyfQ.eU0TtSeSo1zIFZKDwnxA_OY3e3qGpFYK_AwxCZByf-A
+Content-Type: application/json
+
+{
+  "interviewId": 1,
+  "content": "자바는 객체지향 언어이다.",
+  "ispublic": true
+}

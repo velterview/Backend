@@ -165,7 +165,7 @@ public class MemberService {
         }
 
         String refreshToken = refreshHeader.replace(TokenProperties.TOKEN_TYPE, "");
-        String accessToken = refreshHeader.replace(TokenProperties.TOKEN_TYPE, "");
+        String accessToken = accessHeader.replace(TokenProperties.TOKEN_TYPE, "");
 
         // Access 토큰 검증
         String AccessTokenValidate = jwtUtil.validateToken(accessToken);

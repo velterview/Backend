@@ -6,6 +6,7 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Answer;
 import com.innovation.backend.entity.Interview;
 import com.innovation.backend.entity.Member;
+import com.innovation.backend.exception.ErrorCode;
 import com.innovation.backend.repository.AnswerRepository;
 import com.innovation.backend.repository.InterviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.innovation.backend.exception.ErrorCode.INTERVIEW_NOT_FOUND;
+import static com.innovation.backend.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -59,10 +60,11 @@ public class AnswerService {
     public ResponseDto<?> getAnswers(Long interviewId) {
         Interview interview = isPresentInterview(interviewId);
         if (null == interview) {
-            return ResponseDto.fail(INTERVIEW_NOT_FOUND);
+            return ResponseDto.fail(MEMBER_NOT_FOUND);
         }
 
-        List<Answer> answerList = answerRepository.findAllByInterviewAndPublicTrue(interview);
+        List<Answer> answerList = answerRepository.findAllByInterview(interview);
+//        List<Answer> answerList = answerRepository.findAllByInterviewAndPublicTrue(interview);
         List<AnswerResponseDto> answerResponseDtoList = new ArrayList<>();
 
         for (Answer answer : answerList) {

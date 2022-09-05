@@ -1,12 +1,15 @@
 package com.innovation.backend.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
     // 회원가입, 로그인 관련 에러
+
     DUPLICATE_MEMBERNAME("DUPLICATE_MEMBERNAME", "중복된 이름이 있습니다."),
     PASSWORDS_NOT_MATCHED("PASSWORDS_NOT_MATCHED", "비밀번호와 비밀번호 확인이 일치하지 않습니다."),
     MEMBER_NOT_FOUND("MEMBER_NOT_FOUND", "사용자를 찾을 수 없습니다."),

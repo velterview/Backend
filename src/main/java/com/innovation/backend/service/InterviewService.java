@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.innovation.backend.exception.ErrorCode.SUBTOPIC_NOT_FOUND;
+import static com.innovation.backend.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

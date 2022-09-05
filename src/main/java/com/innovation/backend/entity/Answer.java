@@ -32,12 +32,11 @@ public class Answer {
     private String content;
 
     @Column(nullable = false)
-//    @Convert(converter = BooleanToYNConverter.class)
-    private boolean isPublic;
+    private boolean publicTF;
 
     public void update(AnswerRequestDto answerRequestDto) {
         this.content = answerRequestDto.getContent();
-        this.isPublic = answerRequestDto.isPublic();
+        this.publicTF = answerRequestDto.isPublicTF();
     }
 
 }

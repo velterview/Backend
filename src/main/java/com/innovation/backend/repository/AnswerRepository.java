@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AnswerRepository extends JpaRepository<Answer,Long> {
-    List<Answer> findAllByInterview(Interview interview);
+    List<Answer> findAllByInterviewAndPublicTF(Interview interview, boolean tf);
     Answer findByInterviewAndMember(Interview interview, Member member);
 }

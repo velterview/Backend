@@ -6,6 +6,7 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Answer;
 import com.innovation.backend.entity.Interview;
 import com.innovation.backend.entity.Member;
+import com.innovation.backend.exception.ErrorCode;
 import com.innovation.backend.repository.AnswerRepository;
 import com.innovation.backend.repository.InterviewRepository;
 import com.innovation.backend.security.user.UserDetailsImpl;
@@ -37,11 +38,16 @@ public class AnswerService {
 
         Member member = userDetails.getMember();
 
+        boolean alreadyExist = answerAlreadyExist(interview, member);
+        if (alreadyExist) {
+            return ResponseDto.fail(DUPLICATE_ANSWER);
+        }
+
         Answer answer = Answer.builder()
                 .interview(interview)
                 .member(member)
                 .content(requestDto.getContent())
-                .isPublic(requestDto.isPublic())
+                .publicTF(requestDto.isPublicTF())
                 .build();
 
         answerRepository.save(answer);
@@ -55,7 +61,7 @@ public class AnswerService {
             return ResponseDto.fail(INTERVIEW_NOT_FOUND);
         }
 
-        List<Answer> answerList = answerRepository.findAllByInterview(interview);
+        List<Answer> answerList = answerRepository.findAllByInterviewAndPublicTF(interview, true);
         List<AnswerResponseDto> answerResponseDtoList = new ArrayList<>();
 
         for (Answer answer : answerList) {
@@ -87,5 +93,11 @@ public class AnswerService {
     public Interview isPresentInterview(Long questionId) {
         Optional<Interview> interviewOptional = interviewRepository.findById(questionId);
         return interviewOptional.orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean answerAlreadyExist(Interview interview, Member member) {
+        Answer already_exist = answerRepository.findByInterviewAndMember(interview, member);
+        return already_exist != null;
     }
 }

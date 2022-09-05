@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AnswerRequestDto {
     private String content;
-    private boolean isPublic;
+    private boolean publicTF;
 }

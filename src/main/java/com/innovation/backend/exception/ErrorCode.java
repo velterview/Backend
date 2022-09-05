@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @AllArgsConstructor
 @Getter
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
     //회원가입, 로그인 관련 에러
     DUPLICATE_ID("DUPLICATE_ID", "중복된 아이디가 있습니다."),
@@ -36,7 +36,9 @@ public enum ErrorCode {
 
     //찜하기 관련 에러
     LIKES_NOT_FOUND("LIKES_NOT_FOUND","찜한 기록을 찾을 수 없습니다."),
-    DUPLICATE_LIKES("DUPLICATE_LIKES","이미 찜한 질문입니다.");
+    DUPLICATE_LIKES("DUPLICATE_LIKES","이미 찜한 질문입니다."),
+    ANSWER_NOT_FOUND("ANSWER_NOT_FOUND","해당 답변이 없습니다." );
+
 
     private final String code;
     private final String message;

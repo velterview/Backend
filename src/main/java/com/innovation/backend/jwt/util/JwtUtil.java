@@ -79,7 +79,7 @@ public class JwtUtil {
         return refreshTokenFromDB.orElse(null);
     }
 
-    // token에서 username 가져오기
+    // token에서 payload 권한 값 중 username 가져오기
     public String getUsernameFromToken(String token){
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }

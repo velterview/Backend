@@ -22,7 +22,7 @@ public class LikesService {
     private final InterviewRepository interviewRepository;
 
     @Transactional
-    public ResponseDto<?> createLike(Long interviewId, Member member) {
+    public ResponseDto<?> selectedLike(Long interviewId, Member member) {
         Optional<Interview> interviewOptional = interviewRepository.findById(interviewId);
         if (interviewOptional.isEmpty()) return ResponseDto.fail(ErrorCode.INTERVIEW_NOT_FOUND);
 
@@ -35,20 +35,6 @@ public class LikesService {
                     .build();
             likesRepository.save(likes);
             return ResponseDto.success(LikesResponseDto.builder().message("질문을 찜하였습니다.").build());
-        }else{
-            return ResponseDto.fail(ErrorCode.DUPLICATE_LIKES);
-        }
-    }
-
-    @Transactional
-    public ResponseDto<?> deleteLike(Long interviewId, Member member) {
-        Optional<Interview> interviewOptional = interviewRepository.findById(interviewId);
-        if (interviewOptional.isEmpty()) return ResponseDto.fail(ErrorCode.INTERVIEW_NOT_FOUND);
-
-        Interview interview = interviewOptional.get();
-        Optional<Likes> likesOptional = likesRepository.findByMemberAndInterview(member, interview);
-        if (likesOptional.isEmpty()) {
-            return ResponseDto.fail(ErrorCode.LIKES_NOT_FOUND);
         }else{
             Likes likes = likesOptional.get();
             likesRepository.delete(likes);

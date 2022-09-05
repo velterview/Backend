@@ -39,6 +39,7 @@ public class InterviewService {
                             .id(interview.getId())
                             .question(interview.getQuestion())
                             .answer(interview.getAnswer())
+                            .reference(interview.getReference())
                             .build()
             );
         }
@@ -50,12 +51,6 @@ public class InterviewService {
     public SubTopic isPresentSubtopic(Long subtopicId) {
         Optional<SubTopic> subTopicOptional = subTopicRepositoy.findById(subtopicId);
         return subTopicOptional.orElse(null);
-    }
-
-    @Transactional(readOnly = true)
-    public Interview isPresentInterview(Long questionId) {
-        Optional<Interview> interviewOptional = interviewRepository.findById(questionId);
-        return interviewOptional.orElse(null);
     }
 
 }

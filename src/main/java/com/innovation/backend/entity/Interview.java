@@ -29,7 +29,7 @@ public class Interview {
     @Column(nullable = false)
     private String answer;
 
-    @Column()
+    @Column
     private String reference;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview", cascade = CascadeType.ALL)

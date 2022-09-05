@@ -61,7 +61,7 @@ public class WebSecurityConfig {
             configuration.addAllowedHeader("*");
             //허용할 http method
             configuration.addAllowedMethod("*");
-            //쿠키를 요청에 포함하기 위한 설정
+            //사용자 자격 증명이 지원되는지 여부
             configuration.setAllowCredentials(true);
 
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

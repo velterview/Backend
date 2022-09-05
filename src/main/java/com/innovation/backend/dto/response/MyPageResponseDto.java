@@ -16,6 +16,7 @@ public class MyPageResponseDto {
     private List<MyInterview> like;
 
     @Builder
+    @Getter
     public static class MyInterview {
         private Long id;
         private String topic;

@@ -25,5 +25,4 @@ public class Topic {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "topic", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<SubTopic> subTopics;
-
 }

@@ -3,6 +3,7 @@ package com.innovation.backend.exception;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @AllArgsConstructor
 @Getter
@@ -30,14 +31,12 @@ public enum ErrorCode {
 
     // 인터뷰 관련 에러
     INTERVIEW_NOT_FOUND("INTERVIEW_NOT_FOUND", "해당 인터뷰 id를 찾을 수 없습니다."),
-    SUBTOPIC_NOT_FOUND("INTERVIEW_NOT_FOUND", "해당 인터뷰 id를 찾을 수 없습니다."),
+    SUBTOPIC_NOT_FOUND("SUBTOPIC_NOT_FOUND", "해당 소주제 id를 찾을 수 없습니다."),
+    DUPLICATE_ANSWER("DUPLICATE_ANSWER", "이미 사용자가 작성한 답변이 존재합니다."),
 
     //찜하기 관련 에러
     LIKES_NOT_FOUND("LIKES_NOT_FOUND","찜한 기록을 찾을 수 없습니다."),
     DUPLICATE_LIKES("DUPLICATE_LIKES","이미 찜한 질문입니다.");
-
-
-
 
     private final String code;
     private final String message;

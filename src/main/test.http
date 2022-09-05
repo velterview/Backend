@@ -53,7 +53,7 @@ Content-Type: application/json
 
 ### 회원1 답 작성
 POST http://localhost:8080/auth/interview/1
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0Mzc5fQ.NTyCCVJEyrjYk6viyd6qUZJbJQ3gK5nDDem2VDLOtmU
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjU2MywiZXhwIjoxNjYyMzU2NjgzfQ.s3RtWAU5SrEPFrfkjWWB2VSI8g27CUPCnAhC9SSoRjU
 Content-Type: application/json
 
 {
@@ -85,7 +85,7 @@ Content-Type: application/json
 
 ### 회원1 답  또 작성
 POST http://localhost:8080/auth/interview/1
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0Mzc5fQ.NTyCCVJEyrjYk6viyd6qUZJbJQ3gK5nDDem2VDLOtmU
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjU2MywiZXhwIjoxNjYyMzU2NjgzfQ.s3RtWAU5SrEPFrfkjWWB2VSI8g27CUPCnAhC9SSoRjU
 Content-Type: application/json
 
 {
@@ -121,8 +121,8 @@ Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2M
 
 ###### reissue 성공
 POST http://localhost:8080/member/reissue
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0Mzc5fQ.NTyCCVJEyrjYk6viyd6qUZJbJQ3gK5nDDem2VDLOtmU
-Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0NTU5fQ.69igGoiZWUZZxc7SKUhzE3lNr-3j3fVRoMd6QgfGcuU
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjkyNSwiZXhwIjoxNjYyMzU3MDQ1fQ.YJw2td0S5kgAwInMIvdNbEPRbJ8m2rGpzg96CTVGT1U
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjkyNSwiZXhwIjoxNjYyMzU3MjI1fQ.Hlcuxb1XT8VZ_KMkkDsNTFBP3aoPBn7KNhGYyalyuwM
 
 ###### reissue 만료된 리프레쉬 토큰 보냄 -> EXPIRED REFRESH TOKEN
 POST http://localhost:8080/member/reissue
@@ -131,26 +131,30 @@ Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2M
 
 ### 로그아웃 리프레쉬 토큰 안보냄 -> NEED REFRESH TOKEN
 POST http://localhost:8080/auth/member/logout
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzIwMSwiZXhwIjoxNjYyMzIzMzIxfQ.liJPv6kCRMvMXY6wChmUDipnZ9nEyhipjLTcTamvjvQ
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjgwMywiZXhwIjoxNjYyMzU2OTIzfQ.OVYGcrQt-Kf_7UwXFt-mGs0TxeMR3aiDNaAMnXRBEt4
 Content-Type: application/json
 
 ### 로그아웃 리프레쉬 token type 빼고 보냄 -> IVALID REFRESH TOKEN
 POST http://localhost:8080/auth/member/logout
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzIwMSwiZXhwIjoxNjYyMzIzMzIxfQ.liJPv6kCRMvMXY6wChmUDipnZ9nEyhipjLTcTamvjvQ
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjgwMywiZXhwIjoxNjYyMzU2OTIzfQ.OVYGcrQt-Kf_7UwXFt-mGs0TxeMR3aiDNaAMnXRBEt4
 Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMxOTIzOSwiZXhwIjoxNjYyMzE5NTM5fQ.ZwK7_W7FUl8cbOXbgP_sA1etgcZeGtlI4CZwq6bkI9E
 Content-Type: application/json
 
 ### 로그아웃 유효하지 않은 리프레쉬 보냄 -> IVALID REFRESH TOKEN
 POST http://localhost:8080/auth/member/logout
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzIwMSwiZXhwIjoxNjYyMzIzMzIxfQ.liJPv6kCRMvMXY6wChmUDipnZ9nEyhipjLTcTamvjvQ
-Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.ZwK7_W7FUl8cbOXbgP_sA1etgcZeGtlI4CZwq6bkI9E
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjgwMywiZXhwIjoxNjYyMzU2OTIzfQ.OVYGcrQt-Kf_7UwXFt-mGs0TxeMR3aiDNaAMnXRBEt4
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjU2MywiZXhwIjoxNjYyMzU2ODYzfQ
 Content-Type: application/json
 
 ### 로그아웃 -> 만료된 Refresh 토큰 보냄
 POST http://localhost:8080/auth/member/logout
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzc3NiwiZXhwIjoxNjYyMzIzODk2fQ.8d5AT5tI8kS5eFE-TMgnBGYiD9Y8Y7bZHs7bXNy1AC0
-Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzYzNywiZXhwIjoxNjYyMzIzOTM3fQ.jp5rE6_2qw8OYZM5Vxf5z9PkT51JtsutphnhBw6Ibrw
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NzE0OSwiZXhwIjoxNjYyMzU3MjY5fQ.GE_lAE5yHPTUUfQxS8S9G6EIdkwJ-puE8DzKFkEgDNs
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjkyNSwiZXhwIjoxNjYyMzU3MjI1fQ.Hlcuxb1XT8VZ_KMkkDsNTFBP3aoPBn7KNhGYyalyuwM
 
+### 로그아웃
+POST http://localhost:8080/auth/member/logout
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjgwMywiZXhwIjoxNjYyMzU2OTIzfQ.OVYGcrQt-Kf_7UwXFt-mGs0TxeMR3aiDNaAMnXRBEt4
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjU2MywiZXhwIjoxNjYyMzU2ODYzfQ.maBRfClU_287iGJqjE960tEfLLHajw6XIdHLw5xz5Lg
 
 
 ### 회원가입2

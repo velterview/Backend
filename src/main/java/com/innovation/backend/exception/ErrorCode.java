@@ -1,10 +1,12 @@
 package com.innovation.backend.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
     //회원가입, 로그인 관련 에러
     DUPLICATE_ID("DUPLICATE_ID", "중복된 아이디가 있습니다."),

@@ -53,7 +53,7 @@ Content-Type: application/json
 
 ### 회원1 답 작성
 POST http://localhost:8080/auth/interview/1
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjU2MywiZXhwIjoxNjYyMzU2NjgzfQ.s3RtWAU5SrEPFrfkjWWB2VSI8g27CUPCnAhC9SSoRjU
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM5MjA2OCwiZXhwIjoxNjYyMzkyMTg4fQ.hHD58wUlEiDLm0cEQpRRE3qoLx7MyVX_P248DlFApNM
 Content-Type: application/json
 
 {
@@ -107,22 +107,22 @@ Content-Type: application/json
 
 ###### reissue 리프레쉬 토큰 안보냄 -> NEED REFRESH TOKEN
 POST http://localhost:8080/member/reissue
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0Mzc5fQ.NTyCCVJEyrjYk6viyd6qUZJbJQ3gK5nDDem2VDLOtmU
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM5MjA2OCwiZXhwIjoxNjYyMzkyMTg4fQ.hHD58wUlEiDLm0cEQpRRE3qoLx7MyVX_P248DlFApNM
 
 ###### reissue 리프레쉬 token type 빼고 보냄 -> IVALID REFRESH TOKEN
 POST http://localhost:8080/member/reissue
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0Mzc5fQ.NTyCCVJEyrjYk6viyd6qUZJbJQ3gK5nDDem2VDLOtmU
-Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzAwMCwiZXhwIjoxNjYyMzIzMzAwfQ.ZOP7lIo0xK9EzzvGMKCEkzy_ndImnGOquHt3nOM6czw
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM5MjA2OCwiZXhwIjoxNjYyMzkyMTg4fQ.hHD58wUlEiDLm0cEQpRRE3qoLx7MyVX_P248DlFApNM
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM5MTg3NSwiZXhwIjoxNjYyMzkyMTc1fQ.xv1qKPSf1PALnVRaOPUr2x4qK5iVeAzi_iCs4byTzlk
 
 ###### reissue 유효하지 않은 리프레쉬 보냄 -> IVALID REFRESH TOKEN
 POST http://localhost:8080/member/reissue
 Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyNDI1OSwiZXhwIjoxNjYyMzI0Mzc5fQ.NTyCCVJEyrjYk6viyd6qUZJbJQ3gK5nDDem2VDLOtmU
-Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzAwMCwiZXhwIjoxNjYyMzIzMzAwfQ
+Refresh-Token: BEARER eyJhbGciOiJiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjMyMzAwMCwiZXhwIjoxNjYyMzIzMzAwfQ
 
 ###### reissue 성공
 POST http://localhost:8080/member/reissue
-Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjkyNSwiZXhwIjoxNjYyMzU3MDQ1fQ.YJw2td0S5kgAwInMIvdNbEPRbJ8m2rGpzg96CTVGT1U
-Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM1NjkyNSwiZXhwIjoxNjYyMzU3MjI1fQ.Hlcuxb1XT8VZ_KMkkDsNTFBP3aoPBn7KNhGYyalyuwM
+Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM5MjA2OCwiZXhwIjoxNjYyMzkyMTg4fQ.hHD58wUlEiDLm0cEQpRRE3qoLx7MyVX_P248DlFApNM
+Refresh-Token: BEARER eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VydGVzdCIsImlhdCI6MTY2MjM5MTg3NSwiZXhwIjoxNjYyMzkyMTc1fQ.xv1qKPSf1PALnVRaOPUr2x4qK5iVeAzi_iCs4byTzlk
 
 ###### reissue 만료된 리프레쉬 토큰 보냄 -> EXPIRED REFRESH TOKEN
 POST http://localhost:8080/member/reissue

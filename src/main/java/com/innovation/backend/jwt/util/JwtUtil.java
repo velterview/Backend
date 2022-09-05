@@ -51,31 +51,17 @@ public class JwtUtil {
                 .signWith(key,signatureAlgorithm)
                 .compact();
     }
-    
-    // 토큰 검증
+
     public String validateToken( String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return TokenProperties.VALID;
         } catch (ExpiredJwtException e) {
             return TokenProperties.EXPIRED;
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException | UnsupportedJwtException | NullPointerException e) {
+        } catch ( JwtException | IllegalArgumentException | NullPointerException e) {
             return TokenProperties.INVALID;
         }
     }
-
-    // JwTException의 하위 클래스 들인데, ExpiredException을 먼저 할려면...?
-    // try jwts.par~
-//    public String validateToken2( String token) {
-//        try {
-//            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-//            return TokenProperties.VALID;
-//        } catch (ExpiredJwtException e) {
-//            return TokenProperties.EXPIRED;
-//        } catch ( JwtException | IllegalArgumentException | NullPointerException e) {
-//            return TokenProperties.INVALID;
-//        }
-//    }
 
     // 예외 응답
     public void exceptionResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {

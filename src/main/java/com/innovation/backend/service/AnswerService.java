@@ -38,20 +38,21 @@ public class AnswerService {
 
         Member member = userDetails.getMember();
 
-        boolean alreadyExist = answerAlreadyExist(interview, member);
-        if (alreadyExist) {
-            return ResponseDto.fail(DUPLICATE_ANSWER);
+        Answer alreadyExist = answerAlreadyExist(interview, member);
+        if (alreadyExist != null) {
+            alreadyExist.update(requestDto);
+            return ResponseDto.success("답변 수정이 완료되었습니다.");
+        } else {
+            Answer answer = Answer.builder()
+                    .interview(interview)
+                    .member(member)
+                    .content(requestDto.getContent())
+                    .publicTF(requestDto.isPublicTF())
+                    .build();
+
+            answerRepository.save(answer);
+            return ResponseDto.success("답변 저장이 완료되었습니다.");
         }
-
-        Answer answer = Answer.builder()
-                .interview(interview)
-                .member(member)
-                .content(requestDto.getContent())
-                .publicTF(requestDto.isPublicTF())
-                .build();
-
-        answerRepository.save(answer);
-        return ResponseDto.success("답변 저장이 완료되었습니다.");
     }
 
     @Transactional
@@ -96,8 +97,8 @@ public class AnswerService {
     }
 
     @Transactional(readOnly = true)
-    public boolean answerAlreadyExist(Interview interview, Member member) {
-        Answer already_exist = answerRepository.findByInterviewAndMember(interview, member);
-        return already_exist != null;
+    public Answer answerAlreadyExist(Interview interview, Member member) {
+        Optional<Answer> already_exist = Optional.ofNullable(answerRepository.findByInterviewAndMember(interview, member));
+        return already_exist.orElse(null);
     }
 }

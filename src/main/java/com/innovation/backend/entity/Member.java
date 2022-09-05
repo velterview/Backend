@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.List;
 
-@Builder
 @Getter
 @Builder
 @NoArgsConstructor

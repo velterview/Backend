@@ -1,6 +1,7 @@
 package com.innovation.backend.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class RefreshToken {
     @Id
@@ -20,6 +22,10 @@ public class RefreshToken {
     private Member member;
 
     @Column(nullable = false)
-    private String value;
+    private String tokenValue;
+
+    public void updateValue(String tokenValue){
+        this.tokenValue = tokenValue;
+    }
 
 }

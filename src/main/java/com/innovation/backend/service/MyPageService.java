@@ -29,14 +29,14 @@ public class MyPageService {
     private final AnswerRepository answerRepository;
     @Transactional
     public ResponseDto<?> readMypage(Member member){
-        List<Interview> interviewList= interviewRepository.findAllByMember(member);
+        List<Answer> answerList= answerRepository.findAllByMember(member);
         List<Likes> likesList = likesRepository.findAllByMember(member);
 
         List<MyPageResponseDto.MyInterview> myInterviewList = new ArrayList<>();
         List<MyPageResponseDto.MyInterview> myLikeList = new ArrayList<>();
-        for(Interview interview: interviewList)
+        for(Answer answer: answerList)
         {
-            MyPageResponseDto.MyInterview myInterview = getMyInterview(member, interview);
+            MyPageResponseDto.MyInterview myInterview = getMyInterview(answer);
             myInterviewList.add(myInterview);
 
         }
@@ -47,7 +47,16 @@ public class MyPageService {
         }
         return ResponseDto.success(new MyPageResponseDto(myInterviewList,myLikeList));
     }
-
+    public MyPageResponseDto.MyInterview getMyInterview(Answer answer){
+        return MyPageResponseDto.MyInterview.builder()
+                .id(answer.getInterview().getId())
+                .topic(answer.getInterview().getSubTopic().getTopic().getName())
+                .subtopic(answer.getInterview().getSubTopic().getName())
+                .question(answer.getInterview().getQuestion())
+                .answer(answer.getInterview().getAnswer())
+                .myanswer(answer.getContent())
+                .reference(answer.getInterview().getReference()).build();
+    }
     public MyPageResponseDto.MyInterview getMyInterview(Member member, Interview interview){
         Optional<Answer> answerOptional = answerRepository.findByMemberAndInterview(member,interview);
         String myanswer = null;

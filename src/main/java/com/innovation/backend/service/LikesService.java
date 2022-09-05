@@ -34,7 +34,7 @@ public class LikesService {
                     .interview(interview)
                     .build();
             likesRepository.save(likes);
-            return ResponseDto.success(LikesResponseDto.builder().message("질문을 찜하였습니다."));
+            return ResponseDto.success(LikesResponseDto.builder().message("질문을 찜하였습니다.").build());
         }else{
             return ResponseDto.fail(ErrorCode.DUPLICATE_LIKES);
         }
@@ -52,7 +52,7 @@ public class LikesService {
         }else{
             Likes likes = likesOptional.get();
             likesRepository.delete(likes);
-            return ResponseDto.success(LikesResponseDto.builder().message("찜한 질문을 취소하였습니다."));
+            return ResponseDto.success(LikesResponseDto.builder().message("찜한 질문을 취소하였습니다.").build());
         }
     }
 }

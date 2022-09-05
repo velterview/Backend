@@ -1,15 +1,13 @@
 package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,19 +22,19 @@ public class Interview {
     private SubTopic subTopic;
 
     @Column(nullable = false)
-    private String question;
+    private String question;    
 
     @Column(nullable = false)
     private String answer;
 
-    @Column()
+    @Column
     private String reference;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "interview", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Likes> likes;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "interview", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Answer> answers;
 

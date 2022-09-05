@@ -83,7 +83,7 @@ public class MyPageService {
         if(answerOptional.isEmpty())return ResponseDto.fail(ErrorCode.ANSWER_NOT_FOUND);
         Answer answer = answerOptional.get();
         answer.makePublic();
-        if(answer.isPublic()) return ResponseDto.success(new MessageResponseDto("공개로 전환하였습니다."));
+        if(answer.isPublicTF()) return ResponseDto.success(new MessageResponseDto("공개로 전환하였습니다."));
         else return ResponseDto.success(new MessageResponseDto("비공개로 전환하였습니다."));
     }
 

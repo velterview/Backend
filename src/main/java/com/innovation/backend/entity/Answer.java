@@ -1,7 +1,6 @@
 package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.innovation.backend.converter.BooleanToYNConverter;
 import com.innovation.backend.dto.request.AnswerRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +38,7 @@ public class Answer {
         this.publicTF = answerRequestDto.isPublicTF();
     }
     public void makePublic(){
-        this.isPublic = !this.isPublic;
+        this.publicTF = !this.publicTF;
     }
 
 }

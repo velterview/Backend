@@ -67,7 +67,8 @@ public class MemberService {
 
     @Transactional
     public ResponseDto<?> login(LoginReqDto loginReqDto, HttpServletResponse response){
-        Member member = isPresentMemberByUsername(loginReqDto.getUsername());
+        String username = loginReqDto.getUsername();
+        Member member = isPresentMemberByUsername(username);
 
         if(member == null){return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);}
 
@@ -76,8 +77,8 @@ public class MemberService {
         }
 
         // 토큰 발급
-        String accessToken = jwtUtil.createToken(member.getUsername(),TokenProperties.AUTH_HEADER);
-        String refreshToken = jwtUtil.createToken(member.getUsername(), TokenProperties.REFRESH_HEADER);
+        String accessToken = jwtUtil.createToken(username,TokenProperties.AUTH_HEADER);
+        String refreshToken = jwtUtil.createToken(username, TokenProperties.REFRESH_HEADER);
 
         RefreshToken refreshTokenFromDB = jwtUtil.getRefreshTokenFromDB(member);
 

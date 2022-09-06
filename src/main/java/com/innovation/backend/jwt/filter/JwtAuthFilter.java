@@ -52,6 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     jwtUtil.exceptionResponse(response, ErrorCode.INVALID_ACCESS_TOKEN);
                     return;
                 case TokenProperties.VALID:
+                    // JWT 로부터 권한 값 가져오기
                     String username = jwtUtil.getUsernameFromToken(accessToken);
 
                     if (username == null) {
@@ -59,6 +60,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         return;
                     }
 
+                    // JWT 검증 성공 -> 권한 값으로부터 유저를 가져온다
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                     if (userDetails == null) {

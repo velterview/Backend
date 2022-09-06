@@ -18,13 +18,8 @@ public class LikesController {
     private final LikesService likesService;
 
     @RequestMapping(value = "/{interviewId}/like", method = RequestMethod.POST)
-    public ResponseDto<?> createLike(@PathVariable Long interviewId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseDto<?> selectedLike(@PathVariable Long interviewId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         Member member = userDetails.getMember();
-        return likesService.createLike(interviewId, member);
-    }
-    @RequestMapping(value = "/{interviewId}/like", method = RequestMethod.DELETE)
-    public ResponseDto<?> deleteLike(@PathVariable Long interviewId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        Member member = userDetails.getMember();
-        return likesService.deleteLike(interviewId, member);
+        return likesService.selectedLike(interviewId, member);
     }
 }

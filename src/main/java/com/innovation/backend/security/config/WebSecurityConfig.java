@@ -56,7 +56,7 @@ public class WebSecurityConfig {
             CorsConfiguration configuration = new CorsConfiguration();
 
             //허용할 url 설정
-            configuration.addAllowedOrigin("*");
+            configuration.addAllowedOrigin("http://localhost:3000");
             //허용할 헤더 설정
             configuration.addAllowedHeader("*");
             //허용할 http method

@@ -57,8 +57,8 @@ public class MemberService {
 
             MemberInfoResDto memberInfoResDto = MemberInfoResDto.builder()
                     .id(member.getId())
-                    .username(member.getUsername())
-                    .nickname(member.getNickname())
+                    .username(username)
+                    .nickname(nickname)
                     .build();
             return ResponseDto.success(memberInfoResDto);
         }
@@ -101,7 +101,7 @@ public class MemberService {
 
         MemberInfoResDto memberInfoResDto = MemberInfoResDto.builder()
                 .id(member.getId())
-                .username(member.getUsername())
+                .username(username)
                 .nickname(member.getNickname())
                 .build();
         return ResponseDto.success(memberInfoResDto);

@@ -4,7 +4,6 @@ import com.innovation.backend.entity.Answer;
 import com.innovation.backend.entity.Interview;
 import com.innovation.backend.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 

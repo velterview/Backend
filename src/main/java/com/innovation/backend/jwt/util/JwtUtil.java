@@ -8,7 +8,6 @@ import com.innovation.backend.exception.ErrorCode;
 import com.innovation.backend.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -51,15 +50,14 @@ public class JwtUtil {
                 .signWith(key,signatureAlgorithm)
                 .compact();
     }
-    
-    // 토큰 검증
+
     public String validateToken( String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return TokenProperties.VALID;
         } catch (ExpiredJwtException e) {
             return TokenProperties.EXPIRED;
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException | UnsupportedJwtException | NullPointerException e) {
+        } catch ( JwtException | IllegalArgumentException | NullPointerException e) {
             return TokenProperties.INVALID;
         }
     }
@@ -79,7 +77,7 @@ public class JwtUtil {
         return refreshTokenFromDB.orElse(null);
     }
 
-    // token에서 username 가져오기
+    // token에서 payload 권한 값 중 username 가져오기
     public String getUsernameFromToken(String token){
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }

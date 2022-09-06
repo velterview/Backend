@@ -18,12 +18,12 @@ public class AnswerController {
 
     private final AnswerService answerService;
 
-    @RequestMapping(value = "/auth/interview/{interviewId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/interview/{interviewId}/myanswer", method = RequestMethod.POST)
     public ResponseDto<?> createAnswer(@PathVariable Long interviewId, @RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return answerService.createAnswer(interviewId, requestDto, userDetails);
     }
 
-    @RequestMapping(value = "/auth/interview/{interviewId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/auth/interview/{interviewId}/myanswer", method = RequestMethod.PUT)
     public ResponseDto<?> updateAnswer(@PathVariable Long interviewId, @RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return answerService.updateAnswer(interviewId, requestDto, userDetails);
     }

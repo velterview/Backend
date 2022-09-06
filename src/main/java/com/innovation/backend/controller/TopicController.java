@@ -12,7 +12,7 @@ public class TopicController {
 
     private final TopicService topicService;
 
-    @GetMapping("/interview")
+    @GetMapping("/topics")
     public ResponseDto<?> getTopics() {
         return topicService.getTopics();
     }

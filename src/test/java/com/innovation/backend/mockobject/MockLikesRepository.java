@@ -46,4 +46,14 @@ public class MockLikesRepository {
     public void delete(Likes like) {
        likes.remove(like);
     }
+
+    public List<Likes> findAllByMember(Member member) {
+        List<Likes> likelist = new ArrayList<>();
+        for(Likes like :likes){
+            if(like.getMember().equals(member)){
+                likelist.add(like);
+            }
+        }
+        return likelist;
+    }
 }

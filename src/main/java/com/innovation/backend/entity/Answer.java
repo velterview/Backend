@@ -2,15 +2,13 @@ package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.dto.request.AnswerRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

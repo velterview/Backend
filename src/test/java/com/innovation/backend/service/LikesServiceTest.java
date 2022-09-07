@@ -109,4 +109,31 @@ class LikesServiceTest {
         assertFalse("찜하기 취소에 실패하였습니다.", responseDto.isSuccess());
         assertEquals("에러 내용이 다릅니다",ErrorCode.LIKES_NOT_FOUND,responseDto.getError());
     }
+
+    @DisplayName("문제 찜하기/취소")
+    @Test
+    void selectedLike(){
+        ResponseDto<?> responseDto;
+
+        Member member = memberRepository.findById(memberId);
+
+        responseDto = likesService.selectedLike(interviewid, member);
+        LikesResponseDto data = (LikesResponseDto) responseDto.getData();
+
+        assertNotNull(memberId + "에 해당하는 사용자가 없습니다.", member);
+        assertTrue("찜하기에 실패하였습니다.", responseDto.isSuccess());
+        assertEquals("데이터 메세지가 다릅니다", "질문을 찜하였습니다.",data.getMessage());
+        assertNull("에러 내용이 존재합니다",responseDto.getError());
+
+        responseDto = likesService.selectedLike(interviewid, member);
+        data = (LikesResponseDto) responseDto.getData();
+
+        assertNotNull(memberId + "에 해당하는 사용자가 없습니다.", member);
+        assertTrue("찜하기 취소에 실패하였습니다.", responseDto.isSuccess());
+        assertEquals("데이터 메세지가 다릅니다", "찜한 질문을 취소하였습니다.",data.getMessage());
+        assertNull("에러 내용이 존재합니다",responseDto.getError());
+
+
+    }
+
 }

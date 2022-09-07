@@ -73,5 +73,39 @@ class AnswerRepositoryTest {
     @Test
     @DisplayName("find answer")
     void findAnswer() {
+
+        // given
+        Answer answer1 = Answer.builder()
+                .interview(mockInterview)
+                .member(mockMember)
+                .content("공개 답변 내용 1")
+                .publicTF(true)
+                .build();
+
+        Answer answer2 = Answer.builder()
+                .interview(mockInterview)
+                .member(mockMember)
+                .content("비공개 답변 내용 2")
+                .publicTF(false)
+                .build();
+
+        Answer savedAnswer1 = answerRepository.save(answer1);
+        Answer savedAnswer2 = answerRepository.save(answer2);
+
+        // when
+        Answer findAnswer1 = answerRepository.findById(savedAnswer1.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Wrong AnswerId:<" + savedAnswer1.getId() + ">"));
+        Answer findAnswer2 = answerRepository.findById(savedAnswer2.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Wrong AnswerId:<" + savedAnswer2.getId() + ">"));
+
+        // then
+        Assertions.assertThat(findAnswer1.getInterview()).isEqualTo(mockInterview);
+        Assertions.assertThat(findAnswer1.getMember()).isEqualTo(mockMember);
+        Assertions.assertThat(findAnswer1.getContent()).isEqualTo("공개 답변 내용 1");
+        Assertions.assertThat(findAnswer1.isPublicTF()).isEqualTo(true);
+        Assertions.assertThat(findAnswer2.getContent()).isEqualTo("비공개 답변 내용 2");
+        Assertions.assertThat(findAnswer2.isPublicTF()).isEqualTo(false);
+
+
     }
 }

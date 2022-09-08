@@ -26,6 +26,26 @@ public class MockMemberRepository {
         return null;
     }
 
+    public Member findByUsername(String username) {
+        for (Member member : members) {
+            if (member.getUsername().equals(username)) {
+                return member;
+            }
+        }
+
+        return null;
+    }
+
+    public Member findByNickname(String nickname) {
+        for (Member member : members) {
+            if (member.getNickname().equals(nickname)) {
+                return member;
+            }
+        }
+
+        return null;
+    }
+
     public List<Member> findAll() {
         return members;
     }

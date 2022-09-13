@@ -16,6 +16,10 @@ public class MockMemberRepository {
         return member;
     }
 
+    public void mockSave(Member member) {
+        members.add(member);
+    }
+
     public Member findById(Long id) {
         for (Member member : members) {
             if (member.getId().equals(id)) {
@@ -30,4 +34,7 @@ public class MockMemberRepository {
         return members;
     }
 
+    public void deleteAll() {
+
+    }
 }

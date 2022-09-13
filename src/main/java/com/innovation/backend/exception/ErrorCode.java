@@ -19,8 +19,8 @@ public enum ErrorCode {
 
     // reissue 또는 logout시 Refresh 토큰을 보내지 않은 경우
     NEED_REFRESH_TOKEN("NEED_REFRESH_TOKEN","Refresh Token이 필요합니다."),
-
     NEED_ACCESS_TOKEN("NEED_ACCESS_TOKEN","Access Token이 필요합니다."),
+
     // 유효하지 않은 토큰
     INVALID_ACCESS_TOKEN("INVALID_ACCESS_TOKEN", "유효하지 않은 Access Token 입니다."),
     INVALID_REFRESH_TOKEN("INVALID_REFRESH_TOKEN", "유효하지 않은 Refresh Token 입니다."),

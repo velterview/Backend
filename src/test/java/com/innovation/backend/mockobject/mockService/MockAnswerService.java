@@ -1,4 +1,5 @@
-package com.innovation.backend.service;
+/*
+package com.innovation.backend.mockobject.mockService;
 
 import com.innovation.backend.dto.request.AnswerRequestDto;
 import com.innovation.backend.dto.response.AnswerMessageResponseDto;
@@ -7,29 +8,25 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Answer;
 import com.innovation.backend.entity.Interview;
 import com.innovation.backend.entity.Member;
-import com.innovation.backend.exception.ErrorCode;
-import com.innovation.backend.repository.AnswerRepository;
-import com.innovation.backend.repository.InterviewRepository;
-import com.innovation.backend.security.user.UserDetailsImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Service;
+import com.innovation.backend.mockobject.MockInterviewRepository;
+import com.innovation.backend.mockobject.mockRepository.MockAnswerRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.innovation.backend.exception.ErrorCode.*;
+import static com.innovation.backend.exception.ErrorCode.INTERVIEW_NOT_FOUND;
 
-@Service
-@RequiredArgsConstructor
-public class AnswerService {
+public class MockAnswerService {
+    private final MockAnswerRepository answerRepository;
+    private final MockInterviewRepository interviewRepository;
 
-    private final AnswerRepository answerRepository;
-    private final InterviewRepository interviewRepository;
+    public MockAnswerService() {
+        interviewRepository = new MockInterviewRepository();
+        answerRepository = new MockAnswerRepository();
+    }
 
-    @Transactional
     public ResponseDto<?> createAnswer(Long interviewId, AnswerRequestDto requestDto, Member member) {
 
         Interview interview = isPresentInterview(interviewId);
@@ -96,7 +93,8 @@ public class AnswerService {
 
     @Transactional(readOnly = true)
     public Answer answerAlreadyExist(Interview interview, Member member) {
-        Optional<Answer> already_exist = answerRepository.findByMemberAndInterview(member, interview);
+        Optional<Answer> already_exist = Optional.ofNullable(answerRepository.findByInterviewAndMember(interview, member));
         return already_exist.orElse(null);
     }
 }
+*/

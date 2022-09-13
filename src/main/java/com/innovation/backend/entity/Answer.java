@@ -2,14 +2,12 @@ package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.dto.request.AnswerRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Builder
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +29,7 @@ public class Answer {
     private String content;
 
     @Column(nullable = false)
-    private boolean publicTF;
+    private boolean publicTF = true;
 
     public void update(AnswerRequestDto answerRequestDto) {
         this.content = answerRequestDto.getContent();
@@ -40,5 +38,4 @@ public class Answer {
     public void makePublic(){
         this.publicTF = !this.publicTF;
     }
-
 }

@@ -18,6 +18,10 @@ public class MockInterviewRepository {
         return interview;
     }
 
+    public void mockSave(Interview interview) {
+        interviews.add(interview);
+    }
+
     public Optional<Interview> findById(Long id) {
         for (Interview interview : interviews) {
             if (interview.getId().equals(id)) {

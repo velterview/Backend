@@ -11,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-//@WebAppConfiguration
-//@ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AnswerRepositoryTest {
@@ -50,7 +46,7 @@ class AnswerRepositoryTest {
     }
 
     @Test
-    @DisplayName("save answer")
+    @DisplayName("답변 저장하기")
     void saveAnswer() {
 
         // given
@@ -105,7 +101,5 @@ class AnswerRepositoryTest {
         Assertions.assertThat(findAnswer1.isPublicTF()).isEqualTo(true);
         Assertions.assertThat(findAnswer2.getContent()).isEqualTo("비공개 답변 내용 2");
         Assertions.assertThat(findAnswer2.isPublicTF()).isEqualTo(false);
-
-
     }
 }
